@@ -6,4 +6,4 @@
 
 Ключевые элементы данной практической работы' — авторизация, регистрация и аутентификация пользователей.
 
-**ссылка на проект: https://vladimir0412.github.io/mesto/index.html**
+**ссылка на проект: https://vladimir0412.github.io/react-mesto-auth/index.html**
