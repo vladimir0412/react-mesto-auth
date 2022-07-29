@@ -38,9 +38,9 @@ function Login({ submitButton }) {
       </Header>
       <div className="start">
         <h1 className="start__title">Вход</h1>
-        <form className="start__form" name="form" noValidate onSubmit={handleSubmit}>
+        <form className="start__form" name="form" onSubmit={handleSubmit}>
           <input className="start__input" type="email" placeholder="Email" required onChange={handleSubmitEmail} value={email}/>
-          <input className="start__input" type="password" placeholder="Пароль" minLength="8" maxLength="15" required onChange={handleSubmitPassword} value={password}/>
+          <input className="start__input" type="password" placeholder="Пароль" required onChange={handleSubmitPassword} value={password}/>
           <button className="start__button" type="submit">Войти</button>
         </form>
       </div>

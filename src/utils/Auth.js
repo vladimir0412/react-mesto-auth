@@ -13,6 +13,8 @@ export const register = (email, password) => {
     try {
       if (response.status === 201){
         return response.json();
+      } else {
+        return Promise.reject(`Ошибка: ${response.status}`);
       }
     } catch(e){
       return (e)
@@ -21,7 +23,6 @@ export const register = (email, password) => {
   .then((res) => {
     return res;
   })
-  .catch((error) => console.log(error));
 };
 
 export const authorize = (email, password) => {
@@ -40,7 +41,6 @@ export const authorize = (email, password) => {
       return data;
     }
   })
-  .catch(error => console.log(error))
 };
 
 export const getContent = (token) => {

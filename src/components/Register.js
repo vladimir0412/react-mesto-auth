@@ -1,5 +1,5 @@
 import { Link, useHistory } from "react-router-dom";
-import * as Auth from './Auth.js';
+import * as Auth from '../utils/Auth.js';
 import App from "./App";
 import React from "react";
 import Header from "./Header.js";
@@ -36,9 +36,9 @@ function Register({ submitButton }) {
       </Header>
       <div className="start">
         <h1 className="start__title">Регистрация</h1>
-        <form className="start__form" name="form" noValidate  onSubmit={handleSubmit}>
+        <form className="start__form" name="form" onSubmit={handleSubmit}>
           <input className="start__input" type="email" placeholder="Email" required onChange={handleSubmitEmail}/>
-          <input className="start__input" type="password" placeholder="Пароль" minLength="8" maxLength="15" required onChange={handleSubmitPassword}/>
+          <input className="start__input" type="password" placeholder="Пароль" required onChange={handleSubmitPassword}/>
           <button className="start__button" type="submit">Зарегистрироваться</button>
         </form>
         <div className="start__sign-in">

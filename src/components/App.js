@@ -16,7 +16,7 @@ import Register from './Register';
 import Login from './Login';
 import InfoTooltip from './InfoTooltip';
 import ProtectedRoute from './ProtectedRoute';
-import * as auth from './Auth';
+import * as auth from '../utils/Auth';
 import sign from '../images/Sign.png'
 import sign_error from '../images/Sign_error.png'
 
@@ -33,6 +33,10 @@ function App() {
   const history = useHistory();
   const [userEmail, setUserEmail] = React.useState('');
   const [loggedIn, setLoggedIn] = React.useState('false');
+
+  React.useEffect(() => {
+    tokenCheck();
+  }, []);
 
   React.useEffect(() => {
     api.getProfile()
@@ -57,7 +61,7 @@ function App() {
     .catch((error)=>{
       console.log(error);
     })
-  }, []);
+  }, [loggedIn]);
 
   function closeAllPopups() {
     setIsEditProfilePopupOpen(false);
@@ -146,14 +150,15 @@ function App() {
           setIsSuccessfulPopupOpen(true);
           setPopupText('Вы успешно зарегистрировались!');
           setPopupSign(sign);
-        } else {
-          setIsSuccessfulPopupOpen(true);
-          setPopupText('Что-то пошло не так! Попробуйте ещё раз.');
-          setPopupSign(sign_error);
         }
       }
     )
     .catch ((error) => {
+      if(error) {
+      setIsSuccessfulPopupOpen(true);
+      setPopupText('Что-то пошло не так! Попробуйте ещё раз.');
+      setPopupSign(sign_error);
+      }
       console.log(error);
     })
   }
@@ -161,7 +166,7 @@ function App() {
   function toLogin(email, password) {
     auth.authorize(email, password)
       .then((data) => {
-        if (data.token) {
+        if(data.token) {
           setUserEmail(email);
           setLoggedIn(true);
           history.push('/');
@@ -169,6 +174,11 @@ function App() {
       }
     )
     .catch ((error) => {
+      if(error) {
+        setIsSuccessfulPopupOpen(true);
+        setPopupText('Что-то пошло не так! Попробуйте ещё раз.');
+        setPopupSign(sign_error);
+      }
       console.log(error);
     })
   }
@@ -182,18 +192,20 @@ function App() {
   function tokenCheck() {
     const token = localStorage.getItem('token');
     if(token) {
-      auth.getContent(token).then((res) => {
+      auth.getContent(token)
+      .then((res) => {
         if(res) {
           setLoggedIn(true);
           history.push("/");
+          setUserEmail(res.data.email);
+          console.log(res);
         }
-      });
+      })
+      .catch ((error) => {
+        console.log(error);
+      })
     }
   }
-
-  useEffect (() => {
-    tokenCheck();
-  }, []);
 
   return (
     <CurrentUserContext.Provider value={currentUser}>
