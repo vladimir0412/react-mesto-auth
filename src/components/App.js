@@ -32,35 +32,37 @@ function App() {
   const [popupText, setPopupText] = React.useState('');
   const history = useHistory();
   const [userEmail, setUserEmail] = React.useState('');
-  const [loggedIn, setLoggedIn] = React.useState('false');
+  const [loggedIn, setLoggedIn] = React.useState(false);
 
   React.useEffect(() => {
     tokenCheck();
   }, []);
 
   React.useEffect(() => {
-    api.getProfile()
-    .then((userData) => {
-      setCurrentUser(userData);
-    })
-    .catch((error)=>{
-      console.log(error);
-    })
-    api.getCards()
-    .then((data) => {
-      setCards(
-        data.map((item) => ({
-          _id: item._id,
-          link: item.link,
-          name: item.name,
-          likes: item.likes,
-          owner: item.owner
-        }))
-      );
-    })
-    .catch((error)=>{
-      console.log(error);
-    })
+    if(loggedIn === true) {
+      api.getProfile()
+      .then((userData) => {
+        setCurrentUser(userData);
+      })
+      .catch((error)=>{
+        console.log(error);
+      })
+      api.getCards()
+      .then((data) => {
+        setCards(
+          data.map((item) => ({
+            _id: item._id,
+            link: item.link,
+            name: item.name,
+            likes: item.likes,
+            owner: item.owner
+          }))
+        );
+      })
+      .catch((error)=>{
+        console.log(error);
+      })
+    }
   }, [loggedIn]);
 
   function closeAllPopups() {
@@ -198,7 +200,6 @@ function App() {
           setLoggedIn(true);
           history.push("/");
           setUserEmail(res.data.email);
-          console.log(res);
         }
       })
       .catch ((error) => {
